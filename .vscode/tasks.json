@@ -2,6 +2,52 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Android: Robust Deployment (Recommended)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/deploy-android-robust.ps1",
+        "-ForceRestart",
+        "-CleanBuild",
+        "-Verbose"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true,
+        "focus": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Android: Quick Recovery (System UI Fix)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "adb shell input keyevent KEYCODE_HOME; adb shell am force-stop com.android.systemui; adb shell am start com.android.systemui/.SystemUIService; Write-Host 'System UI recovery attempted' -ForegroundColor Green"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      }
+    },
+    {
       "label": "Android: Run on Emulator",
       "type": "shell",
       "command": "powershell",
@@ -12,10 +58,7 @@
         "${workspaceFolder}/android-dev.ps1",
         "run"
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "group": "build",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

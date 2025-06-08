@@ -7,318 +7,455 @@ import {
   Dimensions,
   Animated,
   Easing,
+  StatusBar,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const { width, height } = Dimensions.get('window');
-
-// Particle component for background effect
-const Particle: React.FC<{ style: any }> = ({ style }) => {
-  return <View style={[styles.particle, style]} />;
-};
 
 const WelcomeScreen = () => {
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const floatAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.95)).current;
-  const shineAnim = useRef(new Animated.Value(-width)).current;
-  // Generate random particles
-  const particles = Array(15)
-    .fill(0)
-    .map((_, i) => {
-      const size = Math.random() * 6 + 3;
-      const opacity = Math.random() * 0.5 + 0.1;
-      return {
-        key: i,
-        size,
-        opacity,
-        left: Math.random() * width,
-        top: Math.random() * height,
-        duration: Math.random() * 3000 + 2000,
-      };
-    });
-    
+  const slideUpAnim = useRef(new Animated.Value(50)).current;
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
-    // Fade-in animation
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1800,
+    // Sequential animations for a smooth entrance
+    Animated.sequence([
+      // Fade in
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      // Scale up logo
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.out(Easing.back(1.2)),
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Slide up button
+    Animated.timing(slideUpAnim, {
+      toValue: 0,
+      duration: 1200,
+      delay: 500,
+      easing: Easing.out(Easing.exp),
       useNativeDriver: true,
     }).start();
-    
-    // Continuous floating animation
+
+    // Continuous rotation for logo
     Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnim, {
-          toValue: 1,
-          duration: 2000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(floatAnim, {
-          toValue: 0,
-          duration: 2000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-    
-    // Subtle pulsing animation
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleAnim, {
-          toValue: 1.05,
-          duration: 1500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnim, {
-          toValue: 0.95,
-          duration: 1500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-    
-    // Shine effect animation
-    const animateShine = () => {
-      shineAnim.setValue(-width);
-      Animated.timing(shineAnim, {
-        toValue: width * 2,
-        duration: 2500,
-        easing: Easing.ease,
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 20000,
+        easing: Easing.linear,
         useNativeDriver: true,
-      }).start(() => {
-        // Wait before repeating the animation
-        setTimeout(animateShine, 3000);
-      });
-    };
-      // Start shine animation with a delay
-    setTimeout(animateShine, 1000);
-  }, [fadeAnim, floatAnim, scaleAnim, shineAnim]);
+      })
+    ).start();
+  }, [fadeAnim, slideUpAnim, scaleAnim, rotateAnim]);
+
   return (
-    <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
-      style={styles.container}>
-      {/* Background pattern */}
-      <View style={styles.patternContainer}>
-        <Icon name="map" style={styles.patternIcon} />
-      </View>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#667eea" />
       
-      {/* Particles for background effect */}
-      {particles.map((particle) => (
-        <Particle
-          key={particle.key}
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: particle.left,
-            top: particle.top,
-            opacity: particle.opacity,
-          }}
-        />
-      ))}
-
-      {/* Animated logo container */}
-      <Animated.View
-        style={[
-          styles.logoContainer,
-          {
-            opacity: fadeAnim,
-            transform: [
+      {/* Animated Background Gradient */}
+      <LinearGradient
+        colors={['#667eea', '#764ba2', '#f093fb']}
+        style={styles.backgroundGradient}>
+        
+        {/* Decorative Elements */}
+        <View style={styles.decorativeCircle1} />
+        <View style={styles.decorativeCircle2} />
+        <View style={styles.decorativeCircle3} />
+        
+        {/* Content Container */}
+        <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
+          
+          {/* Logo Section */}
+          <Animated.View
+            style={[
+              styles.logoSection,
               {
-                translateY: floatAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, -20],
-                }),
+                transform: [
+                  { scale: scaleAnim },
+                  {
+                    rotate: rotateAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '360deg'],
+                    }),
+                  },
+                ],
               },
-              {
-                scale: scaleAnim,
-              },
-            ],
-          },
-        ]}>        {/* Logo circle */}
-        <View style={styles.logo}>
-          <Icon name="building" style={styles.logoText} />
-        </View>
-        <Text style={styles.appName}>Business GO</Text>
-        <Text style={styles.tagline}>İşletmenizi geliştirin!</Text>
-      </Animated.View>
-
-    {/* Start button with gradient and animation */}
-      <Animated.View
-        style={{
-          opacity: fadeAnim,
-          transform: [
-            {
-              translateY: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [50, 0],
-              }),
-            },
-          ],
-        }}>        <View style={styles.startButton}>
-          <LinearGradient
-            colors={['#F99F00', '#DB3069']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.buttonGradient}>
-            {/* Shine effect overlay */}
-            <Animated.View
-              style={[
-                styles.shine,
-                {
-                  transform: [{ translateX: shineAnim }],
-                }
-              ]}
-            />
-            <TouchableOpacity 
-              style={styles.touchableArea}
-              activeOpacity={0.7}
-              onPress={() => {
-                // Button press animation
-                Animated.sequence([
-                  Animated.timing(scaleAnim, {
-                    toValue: 0.9,
-                    duration: 100,
-                    useNativeDriver: true,
-                  }),
-                  Animated.timing(scaleAnim, {
-                    toValue: 1.05,
-                    duration: 100,
-                    useNativeDriver: true,
-                  }),
-                  Animated.timing(scaleAnim, {
-                    toValue: 0.95,
-                    duration: 100,
-                    useNativeDriver: true,
-                  })
-                ]).start();
-                
-                console.log('Start button pressed');
-              }}>
-              <View style={styles.buttonTextContainer}>
-                <Text style={styles.buttonText}>Maceraya Başla</Text>
-                <Icon name="arrow-right" style={styles.buttonIcon} />
+            ]}>
+            <View style={styles.logoContainer}>
+              <View style={styles.logoBackground}>
+                <Text style={styles.logoText}>🚀</Text>
               </View>
+              <View style={styles.logoRing} />
+            </View>
+          </Animated.View>
+          
+          {/* Text Section */}
+          <View style={styles.textSection}>
+            <Text style={styles.appName}>BusinessGO</Text>
+            <Text style={styles.tagline}>Empowering your business success</Text>
+            <Text style={styles.subtitle}>
+              Transform your ideas into profitable ventures
+            </Text>
+          </View>
+            {/* Button Section */}
+          <Animated.View
+            style={[
+              styles.buttonSection,
+              {
+                transform: [{ translateY: slideUpAnim }],
+              },
+            ]}>
+            
+            {/* Register Button */}
+            <TouchableOpacity
+              style={styles.registerButton}
+              activeOpacity={0.8}
+              onPress={() => {
+                console.log('Welcome screen - Register button pressed');
+              }}>
+              <LinearGradient
+                colors={['#ff6b6b', '#ff8e53']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.buttonGradient}>
+                <Text style={styles.buttonText}>Create Account</Text>
+                <View style={styles.buttonArrow}>
+                  <Text style={styles.arrowText}>→</Text>
+                </View>
+              </LinearGradient>
             </TouchableOpacity>
-          </LinearGradient>
+            
+            {/* Login Button */}
+            <TouchableOpacity 
+              style={styles.loginButton}
+              activeOpacity={0.8}
+              onPress={() => {
+                console.log('Welcome screen - Login button pressed');
+              }}>
+              <Text style={styles.loginButtonText}>Sign In</Text>
+            </TouchableOpacity>
+            
+            {/* Divider */}
+            <View style={styles.dividerContainer}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or continue with</Text>
+              <View style={styles.dividerLine} />
+            </View>
+            
+            {/* Social Login Options */}
+            <View style={styles.socialLoginContainer}>
+              <TouchableOpacity 
+                style={styles.socialButton}
+                activeOpacity={0.8}
+                onPress={() => {
+                  console.log('Google login pressed');
+                }}>
+                <Text style={styles.socialIcon}>G</Text>
+                <Text style={styles.socialText}>Google</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.socialButton}
+                activeOpacity={0.8}
+                onPress={() => {
+                  console.log('Facebook login pressed');
+                }}>
+                <Text style={styles.socialIcon}>f</Text>
+                <Text style={styles.socialText}>Facebook</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.socialButton}
+                activeOpacity={0.8}
+                onPress={() => {
+                  console.log('Apple login pressed');
+                }}>
+                <Text style={styles.socialIcon}>🍎</Text>
+                <Text style={styles.socialText}>Apple</Text>
+              </TouchableOpacity>
+            </View>
+            
+            {/* Guest Access */}
+            <TouchableOpacity 
+              style={styles.guestButton}
+              activeOpacity={0.8}
+              onPress={() => {
+                console.log('Guest access pressed');
+              }}>
+              <Text style={styles.guestButtonText}>Continue as Guest</Text>
+            </TouchableOpacity>
+            
+          </Animated.View>
+          
+        </Animated.View>
+        
+        {/* Bottom Indicator */}
+        <View style={styles.bottomIndicator}>
+          <View style={styles.indicatorDot} />
+          <View style={[styles.indicatorDot, styles.activeDot]} />
+          <View style={styles.indicatorDot} />
         </View>
-      </Animated.View>
-    </LinearGradient>
+        
+      </LinearGradient>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 80,
   },
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: height * 0.1,
+  backgroundGradient: {
+    flex: 1,
+    width: width,
+    height: height,
   },
-  logo: {
+  decorativeCircle1: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    top: height * 0.1,
+    right: -50,
+  },
+  decorativeCircle2: {
+    position: 'absolute',
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    bottom: height * 0.3,
+    left: -75,
+  },
+  decorativeCircle3: {
+    position: 'absolute',
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    top: height * 0.5,
+    right: width * 0.1,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingHorizontal: 30,
+    paddingVertical: 60,
+  },
+  logoSection: {
+    alignItems: 'center',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    position: 'relative',
+  },
+  logoBackground: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8,
+    shadowRadius: 15,
+    elevation: 15,
+  },
+  logoRing: {
+    position: 'absolute',
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    top: -10,
+    left: -10,
   },
   logoText: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#3b5998',
+    fontSize: 50,
+    color: '#fff',
+  },
+  textSection: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   appName: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#fff',
-    marginTop: 20,
+    textAlign: 'center',
+    marginBottom: 10,
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 3,
+    textShadowRadius: 5,
   },
   tagline: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'rgba(255, 255, 255, 0.9)',
-    marginTop: 10,
+    textAlign: 'center',
+    marginBottom: 10,
+    fontWeight: '500',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.8)',
+    textAlign: 'center',
+    lineHeight: 22,
+  },  buttonSection: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  registerButton: {
+    width: width * 0.8,
+    height: 56,
+    borderRadius: 28,
+    overflow: 'hidden',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  loginButton: {
+    width: width * 0.8,
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   startButton: {
     width: width * 0.8,
     height: 56,
     borderRadius: 28,
     overflow: 'hidden',
-    marginBottom: height * 0.1,
+    marginBottom: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8,
+    shadowRadius: 10,
+    elevation: 10,
   },
-  buttonGradient: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+  dividerContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-  },  buttonTextContainer: {
+    width: '80%',
+    marginBottom: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  dividerText: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 14,
+    marginHorizontal: 15,
+    fontWeight: '500',
+  },
+  socialLoginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
+    marginBottom: 20,
+  },
+  socialButton: {
+    width: 80,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  socialIcon: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 2,
+  },
+  socialText: {
+    fontSize: 10,
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontWeight: '500',
+  },
+  guestButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    marginTop: 10,
+  },
+  guestButtonText: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 16,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+  },  buttonGradient: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-    letterSpacing: 1,
     marginRight: 10,
   },
-  buttonIcon: {
+  buttonArrow: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  arrowText: {
     color: '#fff',
     fontSize: 16,
-  },particle: {
-    position: 'absolute',
-    backgroundColor: '#fff',
-    borderRadius: 50,
-  },  shine: {
-    position: 'absolute',
-    width: 50,
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    transform: [{ skewX: '-20deg' }],
-    zIndex: 10,
+    fontWeight: 'bold',
   },
-  patternContainer: {
-    position: 'absolute',
-    width: width,
-    height: height,
-    opacity: 0.05,
-    overflow: 'hidden',
-    zIndex: 1,
-  },  patternIcon: {
-    position: 'absolute',
-    fontSize: 300,
-    color: '#fff',
-    top: height / 3,
-    left: width / 4,
-  },
-  touchableArea: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+  bottomIndicator: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 40,
+  },
+  indicatorDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: '#fff',
+    width: 24,
+    borderRadius: 12,
   },
 });
 
