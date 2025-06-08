@@ -1,4 +1,6 @@
 {
   "name": "BusinessGoApp",
-  "displayName": "BusinessGoApp"
+  "displayName": "Business GO",
+  "version": "1.0.0",
+  "orientation": "portrait"
 }

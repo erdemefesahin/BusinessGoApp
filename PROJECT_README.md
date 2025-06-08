@@ -46,78 +46,41 @@ cd BusinessGoApp
 npm install
 ```
 
-## Development Toolkits
+### Running the App
 
-### Android Deployment (Recommended)
+#### Using Android Automation Tools
 
-For a complete Android deployment experience, use our comprehensive deployment script:
-
-```sh
-# Deploy to emulator (default)
-.\deploy-android-simple.ps1
-
-# Deploy to physical device
-.\deploy-android-simple.ps1 -Target device
-```
-
-For more information about deployment options and troubleshooting, see [ANDROID_DEPLOYMENT.md](./ANDROID_DEPLOYMENT.md).
-
-### Quick Start (Alternative)
-
-The easiest way to start development is using our user-friendly launcher:
-
-```
-.\dev.bat
-```
-
-This provides an interactive menu to select your platform and development tasks.
-
-### Android Development
+We've created powerful automation scripts to simplify Android development:
 
 ```powershell
 # All-in-one development toolkit
-.\android-dev.ps1 [command] [options]
+.\android-dev.ps1 run
 
-# Quick commands:
-.\android-dev.ps1 run        # Run on emulator
-.\android-dev.ps1 device     # Run on physical device
-.\android-dev.ps1 build      # Build the app
-.\android-dev.ps1 clean      # Clean project
+# Quick start script
+.\launch-android.ps1
+
+# Troubleshooting tool
+.\troubleshoot-android.ps1
 ```
 
-See [ANDROID_WORKFLOW.md](./ANDROID_WORKFLOW.md) for comprehensive documentation on Android development.
+See [ANDROID_WORKFLOW.md](./ANDROID_WORKFLOW.md) for comprehensive documentation.
 
-### iOS Development
+#### Manual Method
 
-```powershell
-# All-in-one iOS development toolkit
-.\ios-dev.ps1 [command] [options]
-
-# Quick commands:
-.\ios-dev.ps1 run        # Run on simulator
-.\ios-dev.ps1 device     # Run on physical device
-.\ios-dev.ps1 pods       # Update CocoaPods
-.\ios-dev.ps1 build      # Build the app
-```
-
-See [IOS_WORKFLOW.md](./IOS_WORKFLOW.md) for comprehensive documentation on iOS development.
-
-### Manual Method
-
-If you prefer not to use the automation scripts:
-
+1. Start Metro
 ```sh
-# Start Metro bundler
-npx react-native start
-
-# Run on Android
-npx react-native run-android
-
-# Run on iOS
-npx react-native run-ios
+npm start
 ```
 
-For a complete overview of all development workflows, see [DEVELOPMENT_WORKFLOW.md](./DEVELOPMENT_WORKFLOW.md).
+2. Run on Android
+```sh
+npm run android
+```
+
+3. Run on iOS
+```sh
+npm run ios
+```
 
 ## Development
 
