@@ -128,11 +128,11 @@ const WelcomeScreen = () => {  // Animation values
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#667eea" />
-        {/* Animated Background Gradient with Business Imagery */}
+        {/* Animated Background Gradient with Restaurant Imagery */}
       <LinearGradient
         colors={['#667eea', '#764ba2', '#f093fb']}
         style={styles.backgroundGradient}>
-          {/* Full Screen Business Background Images */}        <Animated.View style={[styles.fullScreenBackground1, { opacity: backgroundFade1 }]}>
+          {/* Full Screen Restaurant Background Images */}        <Animated.View style={[styles.fullScreenBackground1, { opacity: backgroundFade1 }]}>
           <Image 
             source={{ uri: 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200' }}
             style={styles.fullScreenBackgroundImage}
@@ -687,7 +687,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: 24,
     borderRadius: 12,
-  },  // Full Screen Business Backgrounds
+  },  // Full Screen Restaurant Backgrounds
   fullScreenBackground1: {
     position: 'absolute',
     width: '100%',
@@ -749,7 +749,7 @@ const styles = StyleSheet.create({
     marginTop: -80,
     width: width * 0.6,
   },
-  largeBusinessIcon: {
+  largeRestaurantIcon: {
     fontSize: 120,
     color: 'rgba(255, 255, 255, 0.3)',
     textAlign: 'center',

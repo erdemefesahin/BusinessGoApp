@@ -1,6 +1,6 @@
 /**
- * Business GO App
- * A gamified business application with Pokemon GO style
+ * Restaurant GO App
+ * A gamified restaurant discovery application with Pokemon GO style
  *
  * @format
  */
