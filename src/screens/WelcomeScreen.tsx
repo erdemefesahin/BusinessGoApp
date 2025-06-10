@@ -159,12 +159,12 @@ const WelcomeScreen = () => {  // Animation values
         {/* Decorative Elements */}
         <View style={styles.decorativeCircle1} />
         <View style={styles.decorativeCircle2} />
-        <View style={styles.decorativeCircle3} />
-          {/* Content Container */}
+        <View style={styles.decorativeCircle3} />          {/* Content Container */}
         <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
             {/* Text Section */}
           <View style={styles.textSection}>
             <Text style={styles.appName}>RestaurantGO</Text>
+            <Text style={styles.tagline}>Discover Amazing Restaurants</Text>
           </View>
             {/* Button Section */}
           <Animated.View
