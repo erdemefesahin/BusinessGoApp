@@ -9,12 +9,20 @@ import {
   Easing,
   StatusBar,
   Image,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
-const WelcomeScreen = () => {  // Animation values
+interface WelcomeScreenProps {
+  onNavigateToRegister: () => void;
+  onNavigateToLogin: () => void;
+  onGuestLogin?: () => void;
+}
+
+const WelcomeScreen = ({ onNavigateToRegister, onNavigateToLogin, onGuestLogin }: WelcomeScreenProps) => {
+  // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideUpAnim = useRef(new Animated.Value(50)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
@@ -23,8 +31,8 @@ const WelcomeScreen = () => {  // Animation values
   
   // Background image fade animations
   const backgroundFade1 = useRef(new Animated.Value(1)).current;
-  const backgroundFade2 = useRef(new Animated.Value(0)).current;
-  const backgroundFade3 = useRef(new Animated.Value(0)).current;
+  const backgroundFade2 = useRef(new Animated.Value(0)).current;  const backgroundFade3 = useRef(new Animated.Value(0)).current;
+  
   useEffect(() => {
     // Sequential animations for a smooth entrance
     Animated.sequence([
@@ -49,8 +57,9 @@ const WelcomeScreen = () => {  // Animation values
       duration: 1200,
       delay: 500,
       easing: Easing.out(Easing.exp),
-      useNativeDriver: true,
-    }).start();    // Continuous rotation for logo
+      useNativeDriver: true,    }).start();
+    
+    // Continuous rotation for logo
     Animated.loop(
       Animated.timing(rotateAnim, {
         toValue: 1,
@@ -119,9 +128,10 @@ const WelcomeScreen = () => {  // Animation values
           useNativeDriver: true,
         }),
         // Hold for 3 seconds
-        Animated.delay(3000),
-      ]).start(() => fadeTransition()); // Loop the transition
-    };    // Start background transitions after initial animations
+        Animated.delay(3000),      ]).start(() => fadeTransition()); // Loop the transition
+    };
+    
+    // Start background transitions after initial animations
     setTimeout(() => fadeTransition(), 2000);
   }, [fadeAnim, slideUpAnim, scaleAnim, rotateAnim, pulseAnim, backgroundFade1, backgroundFade2, backgroundFade3]);
 
@@ -130,9 +140,10 @@ const WelcomeScreen = () => {  // Animation values
       <StatusBar barStyle="light-content" backgroundColor="#667eea" />
         {/* Animated Background Gradient with Restaurant Imagery */}
       <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
-        style={styles.backgroundGradient}>
-          {/* Full Screen Restaurant Background Images */}        <Animated.View style={[styles.fullScreenBackground1, { opacity: backgroundFade1 }]}>
+        colors={['#667eea', '#764ba2', '#f093fb']}        style={styles.backgroundGradient}>
+        
+        {/* Full Screen Restaurant Background Images */}
+        <Animated.View style={[styles.fullScreenBackground1, { opacity: backgroundFade1 }]}>
           <Image 
             source={{ uri: 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1200' }}
             style={styles.fullScreenBackgroundImage}
@@ -158,8 +169,9 @@ const WelcomeScreen = () => {  // Animation values
         
         {/* Decorative Elements */}
         <View style={styles.decorativeCircle1} />
-        <View style={styles.decorativeCircle2} />
-        <View style={styles.decorativeCircle3} />          {/* Content Container */}
+        <View style={styles.decorativeCircle2} />        <View style={styles.decorativeCircle3} />
+        
+        {/* Content Container */}
         <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
             {/* Text Section */}
           <View style={styles.textSection}>
@@ -172,8 +184,7 @@ const WelcomeScreen = () => {  // Animation values
               styles.buttonSection,
               {
                 transform: [{ translateY: slideUpAnim }],
-              },
-            ]}>
+              },            ]}>
             
             {/* Register Button */}
             <TouchableOpacity
@@ -181,6 +192,7 @@ const WelcomeScreen = () => {  // Animation values
               activeOpacity={0.8}
               onPress={() => {
                 console.log('Welcome screen - Register button pressed');
+                onNavigateToRegister();
               }}>
               <LinearGradient
                 colors={['#ff6b6b', '#ff8e53']}
@@ -191,15 +203,15 @@ const WelcomeScreen = () => {  // Animation values
                 <View style={styles.buttonArrow}>
                   <Text style={styles.arrowText}>→</Text>
                 </View>
-              </LinearGradient>
-            </TouchableOpacity>
+              </LinearGradient>            </TouchableOpacity>
             
             {/* Login Button */}
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.loginButton}
               activeOpacity={0.8}
               onPress={() => {
                 console.log('Welcome screen - Login button pressed');
+                onNavigateToLogin();
               }}>
               <Text style={styles.loginButtonText}>Sign In</Text>
             </TouchableOpacity>
@@ -208,9 +220,12 @@ const WelcomeScreen = () => {  // Animation values
             <View style={styles.dividerContainer}>
               <View style={styles.dividerLine} />
               <Text style={styles.dividerText}>or continue with</Text>
-              <View style={styles.dividerLine} />
-            </View>            {/* Social Login Options */}
-            <View style={styles.socialLoginContainer}>              <TouchableOpacity 
+              <View style={styles.dividerLine} />            </View>
+            
+            {/* Social Login Options */}
+            <View style={styles.socialLoginContainer}>
+            
+              <TouchableOpacity
                 style={[styles.socialButton, styles.googleButton]}
                 activeOpacity={0.8}
                 onPress={() => {
@@ -244,13 +259,17 @@ const WelcomeScreen = () => {  // Animation values
                 <Text style={[styles.socialButtonText, { color: '#fff' }]}>Apple</Text>
               </TouchableOpacity>
             </View>
-            
-            {/* Guest Access */}
+              {/* Guest Access */}
             <TouchableOpacity 
               style={styles.guestButton}
               activeOpacity={0.8}
               onPress={() => {
                 console.log('Guest access pressed');
+                if (onGuestLogin) {
+                  onGuestLogin();
+                } else {
+                  Alert.alert('Guest Mode', 'Guest access feature coming soon!');
+                }
               }}>
               <Text style={styles.guestButtonText}>Continue as Guest</Text>
             </TouchableOpacity>

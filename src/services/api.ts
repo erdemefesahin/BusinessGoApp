@@ -40,9 +40,9 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Mock user data
 const mockUser: User = {
   id: 'user-1',
-  name: 'Ahmet Yılmaz',
-  email: 'ahmet@example.com',
-  businessName: 'Yılmaz Cafe',
+  name: 'John Smith',
+  email: 'john@example.com',
+  businessName: 'Smith\'s Restaurant',
   xp: 1200,
   level: 2,
   coins: 450,
@@ -53,8 +53,8 @@ const mockUser: User = {
 const mockAchievements: Achievement[] = [
   {
     id: 'ach-1',
-    title: 'İlk Adım',
-    description: 'Uygulamaya hoş geldiniz!',
+    title: 'First Step',
+    description: 'Welcome to the app!',
     completed: true,
     xpReward: 100,
     coinReward: 50,
@@ -62,8 +62,8 @@ const mockAchievements: Achievement[] = [
   },
   {
     id: 'ach-2',
-    title: 'İşletme Uzmanı',
-    description: '5 iş görevi tamamlayın',
+    title: 'Business Expert',
+    description: 'Complete 5 business tasks',
     completed: false,
     xpReward: 300,
     coinReward: 150,
@@ -71,8 +71,8 @@ const mockAchievements: Achievement[] = [
   },
   {
     id: 'ach-3',
-    title: 'Sosyal Ağ',
-    description: '3 sosyal medya hesabını bağlayın',
+    title: 'Social Network',
+    description: 'Connect 3 social media accounts',
     completed: false,
     xpReward: 200,
     coinReward: 100,
@@ -84,8 +84,8 @@ const mockAchievements: Achievement[] = [
 const mockTasks: Task[] = [
   {
     id: 'task-1',
-    title: 'Günlük işletme kontrolü',
-    description: 'Günlük satışları ve stokları kontrol edin',
+    title: 'Daily business check',
+    description: 'Check daily sales and inventory',
     completed: false,
     xpReward: 50,
     coinReward: 25,
@@ -93,8 +93,8 @@ const mockTasks: Task[] = [
   },
   {
     id: 'task-2',
-    title: 'Sosyal medya paylaşımı',
-    description: 'İşletmeniz için günlük sosyal medya içeriği paylaşın',
+    title: 'Social media post',
+    description: 'Share daily social media content for your business',
     completed: false,
     xpReward: 30,
     coinReward: 15,
@@ -102,8 +102,8 @@ const mockTasks: Task[] = [
   },
   {
     id: 'task-3',
-    title: 'Müşteri geri bildirimi',
-    description: 'En az 3 müşteriden geri bildirim alın',
+    title: 'Customer feedback',
+    description: 'Get feedback from at least 3 customers',
     completed: false,
     xpReward: 80,
     coinReward: 40,
