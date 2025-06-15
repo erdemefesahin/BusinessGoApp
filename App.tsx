@@ -10,7 +10,7 @@ import SplashScreen from './src/screens/SplashScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import HomeScreen from './src/screens/HomeScreen';
+import HomeScreen from './src/screens/HomeScreenFixed';
 import AvatarCustomizationScreen, { AvatarConfig } from './src/screens/AvatarCustomizationScreen';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
@@ -104,9 +104,7 @@ function App(): React.JSX.Element {
         return (
           <ErrorBoundary>
             <HomeScreen 
-              onLogout={handleLogout} 
-              onCustomizeAvatar={handleCustomizeAvatar}
-              userAvatar={userAvatar}
+              onLogout={handleLogout}
             />
           </ErrorBoundary>
         );
