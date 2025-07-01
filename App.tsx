@@ -7,10 +7,10 @@ import {
 
 // Import our screens
 import SplashScreen from './src/screens/SplashScreen';
-import WelcomeScreen from './src/screens/WelcomeScreen';
+import WelcomeScreen from './src/screens/WelcomeScreenNew';
 import RegisterScreen from './src/screens/RegisterScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import HomeScreen from './src/screens/HomeScreenFixed';
+import HomeScreen from './src/screens/HomeScreenGameified';
 import AvatarCustomizationScreen, { AvatarConfig } from './src/screens/AvatarCustomizationScreen';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
