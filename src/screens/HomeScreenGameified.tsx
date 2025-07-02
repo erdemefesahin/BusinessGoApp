@@ -16,6 +16,13 @@ const { width, height } = Dimensions.get('window');
 
 interface HomeScreenProps {
   onLogout: () => void;
+  onNavigateToMap?: () => void;
+  onNavigateToDailyTasks?: () => void;
+  onNavigateToMyBusiness?: () => void;
+  onNavigateToLeaderboard?: () => void;
+  onNavigateToAnalytics?: () => void;
+  onNavigateToProgress?: () => void;
+  onNavigateToSettings?: () => void;
 }
 
 interface UserStats {
@@ -27,7 +34,16 @@ interface UserStats {
   businessRank: number;
 }
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ onLogout }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ 
+  onLogout, 
+  onNavigateToMap, 
+  onNavigateToDailyTasks, 
+  onNavigateToMyBusiness, 
+  onNavigateToLeaderboard, 
+  onNavigateToAnalytics,
+  onNavigateToProgress,
+  onNavigateToSettings
+}) => {
   const [userStats, setUserStats] = useState<UserStats>({
     level: 3,
     xp: 750,
@@ -68,35 +84,59 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onLogout }) => {
   const dashboardCards = [
     {
       id: 1,
-      title: 'My Business',
-      icon: '🏪',
-      color: ['#FF6B35', '#FF8A50'],
-      description: 'Manage your store',
-      onPress: () => showFeatureComingSoon('My Business')
-    },
-    {
-      id: 2,
-      title: 'Daily Tasks',
-      icon: '🎯',
-      color: ['#4A90E2', '#7BB3F0'],
-      description: 'Complete challenges',
-      onPress: () => showFeatureComingSoon('Daily Tasks')
-    },
-    {
-      id: 3,
       title: 'Business Map',
       icon: '🗺️',
       color: ['#50C878', '#7FD99F'],
       description: 'Explore opportunities',
-      onPress: () => showFeatureComingSoon('Business Map')
+      onPress: () => {
+        if (onNavigateToMap) {
+          onNavigateToMap();
+        } else {
+          showFeatureComingSoon('Business Map');
+        }
+      }
+    },
+    {
+      id: 2,
+      title: 'Daily Missions',
+      icon: '🎯',
+      color: ['#4A90E2', '#7BB3F0'],
+      description: 'Complete challenges',
+      onPress: () => {
+        if (onNavigateToDailyTasks) {
+          onNavigateToDailyTasks();
+        } else {
+          showFeatureComingSoon('Daily Missions');
+        }
+      }
+    },
+    {
+      id: 3,
+      title: 'Progress',
+      icon: '�',
+      color: ['#9B59B6', '#8E44AD'],
+      description: 'Track your journey',
+      onPress: () => {
+        if (onNavigateToProgress) {
+          onNavigateToProgress();
+        } else {
+          showFeatureComingSoon('Progress');
+        }
+      }
     },
     {
       id: 4,
-      title: 'Leaderboard',
-      icon: '🏆',
-      color: ['#FFD700', '#FFED4A'],
-      description: 'See your ranking',
-      onPress: () => showFeatureComingSoon('Leaderboard')
+      title: 'Settings',
+      icon: '⚙️',
+      color: ['#34495E', '#2C3E50'],
+      description: 'Customize your app',
+      onPress: () => {
+        if (onNavigateToSettings) {
+          onNavigateToSettings();
+        } else {
+          showFeatureComingSoon('Settings');
+        }
+      }
     },
   ];
 
@@ -253,21 +293,45 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onLogout }) => {
           <View style={styles.quickActionsGrid}>
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showFeatureComingSoon('Add Task')}>
+              onPress={() => {
+                Alert.alert(
+                  'Add Task',
+                  'Create a new business task to track your progress!',
+                  [
+                    { text: 'Cancel', style: 'cancel' },
+                    { text: 'Coming Soon', style: 'default' }
+                  ]
+                );
+              }}>
               <Text style={styles.quickActionIcon}>➕</Text>
               <Text style={styles.quickActionText}>Add Task</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showFeatureComingSoon('View Analytics')}>
+              onPress={() => {
+                if (onNavigateToAnalytics) {
+                  onNavigateToAnalytics();
+                } else {
+                  showFeatureComingSoon('View Analytics');
+                }
+              }}>
               <Text style={styles.quickActionIcon}>📊</Text>
               <Text style={styles.quickActionText}>Analytics</Text>
             </TouchableOpacity>
             
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showFeatureComingSoon('Share Progress')}>
+              onPress={() => {
+                Alert.alert(
+                  'Share Progress',
+                  'Share your business achievements with friends and fellow entrepreneurs!',
+                  [
+                    { text: 'Cancel', style: 'cancel' },
+                    { text: 'Share via...', style: 'default' }
+                  ]
+                );
+              }}>
               <Text style={styles.quickActionIcon}>📤</Text>
               <Text style={styles.quickActionText}>Share</Text>
             </TouchableOpacity>

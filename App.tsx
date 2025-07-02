@@ -11,10 +11,17 @@ import WelcomeScreen from './src/screens/WelcomeScreenNew';
 import RegisterScreen from './src/screens/RegisterScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreenGameified';
+import BusinessMapScreen from './src/screens/BusinessMapScreen';
+import DailyTasksScreen from './src/screens/DailyTasksScreen';
+import MyBusinessScreen from './src/screens/MyBusinessScreen';
+import LeaderboardScreen from './src/screens/LeaderboardScreen';
+import AnalyticsScreen from './src/screens/AnalyticsScreen';
+import ProgressScreen from './src/screens/ProgressScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 import AvatarCustomizationScreen, { AvatarConfig } from './src/screens/AvatarCustomizationScreen';
 import ErrorBoundary from './src/components/ErrorBoundary';
 
-type ScreenType = 'splash' | 'welcome' | 'register' | 'login' | 'main' | 'avatar';
+type ScreenType = 'splash' | 'welcome' | 'register' | 'login' | 'main' | 'avatar' | 'map' | 'dailyTasks' | 'myBusiness' | 'leaderboard' | 'analytics' | 'progress' | 'settings';
 
 function App(): React.JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('splash');
@@ -73,6 +80,62 @@ function App(): React.JSX.Element {
     setCurrentScreen('main');
   };
 
+  const handleNavigateToMap = () => {
+    setCurrentScreen('map');
+  };
+
+  const handleBackFromMap = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToDailyTasks = () => {
+    setCurrentScreen('dailyTasks');
+  };
+
+  const handleBackFromDailyTasks = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToMyBusiness = () => {
+    setCurrentScreen('myBusiness');
+  };
+
+  const handleBackFromMyBusiness = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToLeaderboard = () => {
+    setCurrentScreen('leaderboard');
+  };
+
+  const handleBackFromLeaderboard = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToAnalytics = () => {
+    setCurrentScreen('analytics');
+  };
+
+  const handleBackFromAnalytics = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToProgress = () => {
+    setCurrentScreen('progress');
+  };
+
+  const handleBackFromProgress = () => {
+    setCurrentScreen('main');
+  };
+
+  const handleNavigateToSettings = () => {
+    setCurrentScreen('settings');
+  };
+
+  const handleBackFromSettings = () => {
+    setCurrentScreen('main');
+  };
+
   const renderScreen = () => {
     switch (currentScreen) {
       case 'splash':
@@ -105,7 +168,56 @@ function App(): React.JSX.Element {
           <ErrorBoundary>
             <HomeScreen 
               onLogout={handleLogout}
+              onNavigateToMap={handleNavigateToMap}
+              onNavigateToDailyTasks={handleNavigateToDailyTasks}
+              onNavigateToMyBusiness={handleNavigateToMyBusiness}
+              onNavigateToLeaderboard={handleNavigateToLeaderboard}
+              onNavigateToAnalytics={handleNavigateToAnalytics}
+              onNavigateToProgress={handleNavigateToProgress}
+              onNavigateToSettings={handleNavigateToSettings}
             />
+          </ErrorBoundary>
+        );
+      case 'map':
+        return (
+          <ErrorBoundary>
+            <BusinessMapScreen onBack={handleBackFromMap} />
+          </ErrorBoundary>
+        );
+      case 'dailyTasks':
+        return (
+          <ErrorBoundary>
+            <DailyTasksScreen onBack={handleBackFromDailyTasks} />
+          </ErrorBoundary>
+        );
+      case 'myBusiness':
+        return (
+          <ErrorBoundary>
+            <MyBusinessScreen onBack={handleBackFromMyBusiness} />
+          </ErrorBoundary>
+        );
+      case 'leaderboard':
+        return (
+          <ErrorBoundary>
+            <LeaderboardScreen onBack={handleBackFromLeaderboard} />
+          </ErrorBoundary>
+        );
+      case 'analytics':
+        return (
+          <ErrorBoundary>
+            <AnalyticsScreen onBack={handleBackFromAnalytics} />
+          </ErrorBoundary>
+        );
+      case 'progress':
+        return (
+          <ErrorBoundary>
+            <ProgressScreen onBack={handleBackFromProgress} />
+          </ErrorBoundary>
+        );
+      case 'settings':
+        return (
+          <ErrorBoundary>
+            <SettingsScreen onBack={handleBackFromSettings} />
           </ErrorBoundary>
         );
       case 'avatar':
