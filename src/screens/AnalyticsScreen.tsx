@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 interface AnalyticsScreenProps {
   onBack?: () => void;
@@ -23,10 +22,7 @@ const AnalyticsScreen: React.FC<AnalyticsScreenProps> = ({ onBack }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#3498DB', '#5DADE2']}
-        style={styles.header}
-      >
+      <View style={styles.header}>
         {onBack && (
           <TouchableOpacity style={styles.backButton} onPress={onBack}>
             <Text style={styles.backButtonText}>←</Text>
@@ -36,7 +32,7 @@ const AnalyticsScreen: React.FC<AnalyticsScreenProps> = ({ onBack }) => {
           <Text style={styles.headerTitle}>Analytics</Text>
           <Text style={styles.headerSubtitle}>Track your progress</Text>
         </View>
-      </LinearGradient>
+      </View>
 
       <ScrollView style={styles.content}>
         <View style={styles.analyticsGrid}>
@@ -66,6 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FA',
   },
   header: {
+    backgroundColor: '#3498DB',
     padding: 20,
     paddingTop: 40,
     flexDirection: 'row',
